@@ -5,69 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeux Volcaniques</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            background-color: #f4f4f4; 
-            color: #333; 
-            text-align: center; 
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1, h2 {
-            color: #e63946;
-        }
-        .hidden { 
-            display: none; 
-        }
-        .game-button, button {
-            margin: 10px;
-            padding: 10px 20px;
-            background-color: #e63946;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .game-button:hover, button:hover {
-            background-color: #d62828;
-        }
-        .game-section {
-            display: none;
-        }
-        .active {
-            display: block;
-        }
-        .piece {
-            display: inline-block;
-            width: 100px;
-            height: 100px;
-            border: 1px solid #ccc;
-            margin: 5px;
-            background-size: cover;
-        }
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; text-align: center; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        h1 { font-size: 2.5em; color: #e63946; }
+        h2 { font-size: 1.5em; color: #333; }
+        .phase, .question, .game { margin: 20px 0; }
+        button { margin: 10px; padding: 10px 20px; background-color: #e63946; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #d62828; }
+        .hidden { display: none; }
+        #puzzle { display: grid; grid-template-columns: repeat(3, 100px); grid-gap: 10px; justify-content: center; }
+        .piece { width: 100px; height: 100px; border: 1px solid #ccc; cursor: pointer; }
+        .nav { margin-bottom: 20px; }
+        .nav button { margin: 5px; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Jeux Volcaniques</h1>
-        <div id="home">
-            <h2>Choisissez un jeu</h2>
-            <button class="game-button" onclick="showGame('game1')">Survivre à une éruption</button>
-            <button class="game-button" onclick="showGame('game2')">Quiz Volcanique</button>
-            <button class="game-button" onclick="showGame('game3')">Puzzle des Volcans</button>
+        <div class="nav">
+            <button onclick="showGame('game1')">Survivre à une éruption</button>
+            <button onclick="showGame('game2')">Quiz Volcanique</button>
+            <button onclick="showGame('game3')">Puzzle des Volcans</button>
         </div>
-
-        <!-- Jeu 1 : Survivre à une éruption -->
-        <div id="game1" class="game-section">
+        <div id="game1" class="game">
             <h2>Survivre à une éruption</h2>
             <div id="phase1" class="phase">
-                <h3>Phase 1 : Préparation</h3>
                 <p>Constituer un kit d'urgence. Quels objets voulez-vous inclure ?</p>
                 <input type="checkbox" id="eau" name="kit" value="eau"> Eau<br>
                 <input type="checkbox" id="nourriture" name="kit" value="nourriture"> Nourriture<br>
@@ -78,112 +40,61 @@
                 <p id="kitMessage"></p>
             </div>
             <div id="phase2" class="phase hidden">
-                <h3>Phase 2 : Pendant l'éruption</h3>
                 <p>Voulez-vous évacuer maintenant ?</p>
                 <button onclick="evacuer('oui')">Oui</button>
                 <button onclick="evacuer('non')">Non</button>
                 <p id="evacMessage"></p>
             </div>
             <div id="phase3" class="phase hidden">
-                <h3>Phase 3 : Après l'éruption</h3>
                 <p>Comment allez-vous nettoyer les cendres ?</p>
                 <button onclick="nettoyer('avec un masque')">Avec un masque</button>
                 <button onclick="nettoyer('sans masque')">Sans masque</button>
                 <p id="cleanMessage"></p>
-                <button onclick="showHome()">Retour à l'accueil</button>
-                <p class="hidden" id="winMessage1">Gagné !</p>
             </div>
         </div>
-
-        <!-- Jeu 2 : Quiz Volcanique -->
-        <div id="game2" class="game-section">
+        <div id="game2" class="game hidden">
             <h2>Quiz Volcanique</h2>
-            <div id="quiz">
-                <div class="question" id="question1">
-                    <h3>Quel est le plus grand volcan actif au monde ?</h3>
-                    <button onclick="checkAnswer('question1', 'Mauna Loa')">Mauna Loa</button>
-                    <button onclick="checkAnswer('question1', 'Vésuve')">Vésuve</button>
-                    <button onclick="checkAnswer('question1', 'Krakatoa')">Krakatoa</button>
-                    <p id="message1"></p>
-                </div>
-                <div class="question hidden" id="question2">
-                    <h3>Quelle est la substance la plus émise par les volcans ?</h3>
-                    <button onclick="checkAnswer('question2', 'Lave')">Lave</button>
-                    <button onclick="checkAnswer('question2', 'Cendres')">Cendres</button>
-                    <button onclick="checkAnswer('question2', 'Gaz')">Gaz</button>
-                    <p id="message2"></p>
-                </div>
-                <div class="question hidden" id="question3">
-                    <h3>En quelle année le Mont Saint Helens a-t-il érupté ?</h3>
-                    <button onclick="checkAnswer('question3', '1980')">1980</button>
-                    <button onclick="checkAnswer('question3', '1991')">1991</button>
-                    <button onclick="checkAnswer('question3', '2001')">2001</button>
-                    <p id="message3"></p>
-                </div>
+            <div class="question" id="question1">
+                <p>Quel est le plus grand volcan actif au monde ?</p>
+                <button onclick="checkAnswer('question1', 'Mauna Loa')">Mauna Loa</button>
+                <button onclick="checkAnswer('question1', 'Vésuve')">Vésuve</button>
+                <button onclick="checkAnswer('question1', 'Krakatoa')">Krakatoa</button>
+                <p id="message1"></p>
             </div>
-            <button onclick="showHome()">Retour à l'accueil</button>
-            <p class="hidden" id="winMessage2">Bravo, vous avez terminé le quiz !</p>
+            <div class="question hidden" id="question2">
+                <p>Quelle est la substance la plus émise par les volcans ?</p>
+                <button onclick="checkAnswer('question2', 'Lave')">Lave</button>
+                <button onclick="checkAnswer('question2', 'Cendres')">Cendres</button>
+                <button onclick="checkAnswer('question2', 'Gaz')">Gaz</button>
+                <p id="message2"></p>
+            </div>
+            <div class="question hidden" id="question3">
+                <p>En quelle année le Mont Saint Helens a-t-il érupté ?</p>
+                <button onclick="checkAnswer('question3', '1980')">1980</button>
+                <button onclick="checkAnswer('question3', '1991')">1991</button>
+                <button onclick="checkAnswer('question3', '2001')">2001</button>
+                <p id="message3"></p>
+            </div>
+            <p id="finalMessage" class="hidden">Bravo, vous avez terminé le quiz !</p>
         </div>
-
-        <!-- Jeu 3 : Puzzle des Volcans -->
-        <div id="game3" class="game-section">
+        <div id="game3" class="game hidden">
             <h2>Puzzle des Volcans</h2>
             <div id="puzzle">
-                <!-- Example puzzle pieces -->
                 <div class="piece" style="background-image: url('piece1.jpg');" onclick="movePiece(this)"></div>
                 <div class="piece" style="background-image: url('piece2.jpg');" onclick="movePiece(this)"></div>
                 <div class="piece" style="background-image: url('piece3.jpg');" onclick="movePiece(this)"></div>
-                <!-- Add more pieces as needed -->
+                <div class="piece" style="background-image: url('piece4.jpg');" onclick="movePiece(this)"></div>
+                <div class="piece" style="background-image: url('piece5.jpg');" onclick="movePiece(this)"></div>
+                <div class="piece" style="background-image: url('piece6.jpg');" onclick="movePiece(this)"></div>
+                <div class="piece" style="background-image: url('piece7.jpg');" onclick="movePiece(this)"></div>
+                <div class="piece" style="background-image: url('piece8.jpg');" onclick="movePiece(this)"></div>
+                <div class="piece" style="background-image: url('piece9.jpg');" onclick="movePiece(this)"></div>
             </div>
-            <button onclick="showHome()">Retour à l'accueil</button>
-            <p class="hidden" id="winMessage3">Vous avez complété le puzzle !</p>
+            <p id="message"></p>
         </div>
     </div>
-
-    <script>
-        function showGame(gameId) {
-            document.querySelectorAll('.game-section').forEach(function(section) {
-                section.classList.remove('active');
-            });
-            document.getElementById(gameId).classList.add('active');
-            document.getElementById('home').style.display = 'none';
-        }
-
-        function showHome() {
-            document.querySelectorAll('.game-section').forEach(function(section) {
-                section.classList.remove('active');
-            });
-            document.getElementById('home').style.display = 'block';
-        }
-
-        function checkKit() {
-            const essentialItems = ['eau', 'nourriture', 'medicaments'];
-            let selectedItems = [];
-            document.querySelectorAll('input[name="kit"]:checked').forEach(function(checkbox) {
-                selectedItems.push(checkbox.value);
-            });
-
-            if (essentialItems.every(item => selectedItems.includes(item))) {
-                document.getElementById('kitMessage').textContent = "Bonne préparation ! Passons à la phase suivante.";
-                document.getElementById('phase1').classList.add('hidden');
-                document.getElementById('phase2').classList.remove('hidden');
-            } else {
-                document.getElementById('kitMessage').textContent = "Il vous manque des objets essentiels.";
-            }
-        }
-
-        function evacuer(choice) {
-            if (choice === 'oui') {
-                document.getElementById('evacMessage').textContent = "Bonne décision ! Vous êtes en sécurité.";
-                document.getElementById('phase2').classList.add('hidden');
-                document.getElementById('phase3').classList.remove('hidden');
-            } else {
-                document.getElementById('evacMessage').textContent = "Restez prudent, il est conseillé d'évacuer.";
-            }
-        }
-
-        function nettoyer(method) {
-            if (method === 'avec un masque') {
-                document.getElementById('cleanMessage').textContent = "Bon choix ! Nettoyer en toute sécurité.";
-                document.getElementById('winMessage1').classList.remove('hidden');
-           
+    <script src="game.js"></script>
+    <script src="quiz.js"></script>
+    <script src="puzzle.js"></script>
+</body>
+</html>
